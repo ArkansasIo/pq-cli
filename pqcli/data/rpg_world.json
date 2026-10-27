@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "world": {
+    "id": "aetheria",
+    "name": "Aetheria",
+    "level_cap": 100,
+    "zones": [
+      {"id": "greenfields", "name": "Greenfields", "level_min": 1, "level_max": 10, "biome": "plains"},
+      {"id": "ironwood", "name": "Ironwood", "level_min": 8, "level_max": 20, "biome": "forest"},
+      {"id": "ashlands", "name": "Ashlands", "level_min": 18, "level_max": 35, "biome": "volcanic"},
+      {"id": "frostmarch", "name": "Frostmarch", "level_min": 30, "level_max": 50, "biome": "tundra"},
+      {"id": "starfall", "name": "Starfall", "level_min": 45, "level_max": 70, "biome": "arcane"},
+      {"id": "voidreach", "name": "Voidreach", "level_min": 65, "level_max": 100, "biome": "void"}
+    ]
+  }
+}
