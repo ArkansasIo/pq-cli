@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import asdict
 from typing import Callable
+from uuid import uuid4
 
 from .contracts import ErrorResponse, LoginRequest, LoginResponse
 from ..server.auth import AuthService
@@ -28,12 +28,15 @@ class ApiRouter:
             return ErrorResponse("bad_request", str(exc)).to_dict()
 
     def register(self, body: dict) -> dict:
-        account = self.auth.register(str(body["username"]), str(body["password"]))
+        account = self.auth.register(str(body.get("account_id", uuid4())), str(body["username"]), str(body["password"]))
         return {"account_id": account.account_id}
 
     def login(self, body: dict) -> dict:
         request = LoginRequest(str(body["username"]), str(body["password"]))
-        account, token = self.auth.login(request.username, request.password)
+        token = self.auth.login(request.username, request.password)
+        account = self.auth.account_for(token)
+        if account is None:
+            raise ValueError("authentication session could not be created")
         return LoginResponse(token, account.account_id).to_dict()
 
     def logout(self, body: dict) -> dict:
