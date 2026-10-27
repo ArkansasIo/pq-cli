@@ -16,9 +16,9 @@ Units):
 from __future__ import annotations
 
 import math
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from enum import StrEnum
-from typing import Callable, Iterable
 
 from .enums import DamageType
 from .stats import Attributes
@@ -267,7 +267,7 @@ class SubAttributes:
     def from_attributes(
         cls, attributes: Attributes, gear: dict[str, float] | None = None,
         pvp: bool = False,
-    ) -> "SubAttributes":
+    ) -> SubAttributes:
         raw = {e.value: 0.0 for e in SubStatId}
         attr_dict = attributes.as_dict()
         for stat_id, (base, coefs) in _DERIVED_FORMULAS.items():
@@ -412,6 +412,24 @@ class ResourceBars:
     def get(self, resource: ResourceId | str) -> float:
         return self.current.get(str(getattr(resource, "value", resource)), 0.0)
 
+    # -- Legacy compatibility (ResourcePool-style attribute access) ---------- #
+
+    @property
+    def hp(self) -> float:
+        return self.current.get(ResourceId.HP.value, 0.0)
+
+    @hp.setter
+    def hp(self, value: float) -> None:
+        self.current[ResourceId.HP.value] = max(0.0, value)
+
+    @property
+    def mp(self) -> float:
+        return self.current.get(ResourceId.MP.value, 0.0)
+
+    @mp.setter
+    def mp(self, value: float) -> None:
+        self.current[ResourceId.MP.value] = max(0.0, value)
+
 
 # ============================================================================ #
 # 8. Resistances (4-layer model)                                               #
@@ -463,6 +481,21 @@ class StatBlock:
     resistances: Resistances = field(default_factory=Resistances)
     resources: ResourceBars = field(default_factory=ResourceBars)
     tags: set[str] = field(default_factory=set)
+
+    def combat_proxy(self):
+        """Bridge to the legacy CombatStats for the legacy CombatEngine."""
+        from .stats import CombatStats
+        s = self.sub
+        return CombatStats(
+            max_hp=int(self.resources.maxima.get(ResourceId.HP.value, 100)),
+            attack=int(s.get(SubStatId.PHYSICAL_POWER)),
+            spell_power=int(s.get(SubStatId.SPELL_POWER)),
+            armor=int(s.get(SubStatId.ARMOR)),
+            magic_resist=int(s.get(SubStatId.MAGIC_RESIST)),
+            crit_chance=min(0.75, s.get(SubStatId.CRIT_CHANCE)),
+            dodge_chance=min(0.50, s.get(SubStatId.EVASION)),
+            block_chance=min(0.75, s.get(SubStatId.BLOCK_CHANCE)),
+        )
 
     def recompute(self) -> None:
         """Recompute derived stats from attributes + gear."""
