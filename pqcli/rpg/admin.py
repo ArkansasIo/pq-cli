@@ -22,10 +22,11 @@ class AdminService:
         self.audit_log.append(action)
 
     def kick(self, actor_id: str, session_id: str, reason: str = "") -> bool:
-        removed = self.server.disconnect(session_id)
+        existed = session_id in self.server.sessions
+        self.server.disconnect(session_id)
         self.record(AdminAction(actor_id, "kick", session_id, reason))
-        return removed
+        return existed
 
     def maintenance(self, actor_id: str, enabled: bool) -> None:
-        self.server.set_maintenance(enabled)
+        self.server.status = self.server.status.__class__.MAINTENANCE if enabled else self.server.status.__class__.ONLINE
         self.record(AdminAction(actor_id, "maintenance_on" if enabled else "maintenance_off"))
