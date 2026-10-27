@@ -368,7 +368,8 @@ def test_import(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    monkeypatch.setenv("HOME", str(tmp_path))
+    for var in ("HOME", "USERPROFILE"):
+        monkeypatch.setenv(var, str(tmp_path))
     write_pqw(tmp_path / "cid.pqw", hero("Cid"), online=True)
     ui = make_ui(tmp_path / "config", hero("Ann"))
     feed(monkeypatch, ["5", "  ~/cid.pqw  ", "7"])
@@ -432,7 +433,8 @@ def test_export_to_a_chosen_file(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    monkeypatch.setenv("HOME", str(tmp_path))
+    for var in ("HOME", "USERPROFILE"):
+        monkeypatch.setenv(var, str(tmp_path))
     ui = make_ui(tmp_path, hero("Ann"))
     feed(monkeypatch, [" ~/out.pqw "])
     ui.export_player(ui.roster.players[0])

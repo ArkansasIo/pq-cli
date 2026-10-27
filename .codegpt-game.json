@@ -1,0 +1,23 @@
+{
+    "name":  "pq-cli",
+    "engine":  "generic",
+    "launch":  {
+                   "cmd":  "uv",
+                   "args":  [
+                                "run",
+                                "pqcli",
+                                "--basic"
+                            ],
+                   "cwd":  "c:\\Users\\Shadow\\Videos\\New folder (7)\\pq-cli",
+                   "stdin":  "Hero\nyyyy"
+               },
+    "log":  {
+                "stdout":  true
+            },
+    "sourceRoots":  [
+                        "pqcli"
+                    ],
+    "vars":  {
+
+             }
+}
