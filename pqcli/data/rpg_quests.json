@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "quests": [
+    {"id": "first_blood", "name": "First Blood", "type": "main", "level": 1, "objectives": [{"type": "kill", "target": "wolf", "count": 3}], "xp": 100, "gold": 25},
+    {"id": "roadwardens", "name": "Roadwardens", "type": "side", "level": 5, "objectives": [{"type": "kill", "target": "bandit", "count": 10}], "xp": 500, "gold": 100},
+    {"id": "frozen_gate", "name": "The Frozen Gate", "type": "world", "level": 30, "objectives": [{"type": "dungeon", "target": "frostmarch_keep", "count": 1}], "xp": 5000, "gold": 1000}
+  ]
+}
