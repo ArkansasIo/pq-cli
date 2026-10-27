@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .character import Character
+from .runtime import RuntimeState
 
 
 @dataclass
@@ -21,11 +22,13 @@ class RespawnService:
         self.states[character.id] = state
         return state
 
-    def respawn(self, character: Character) -> str:
+    def respawn(self, character: Character, runtime: RuntimeState | None = None) -> str:
         state = self.states.get(character.id)
         if state is None or not state.dead:
             raise ValueError("character is not dead")
         zone = state.respawn_zone or "starter_zone"
-        character.resources.hp = character.combat_stats.max_hp
+        if runtime is not None:
+            runtime.zone_id = zone
+            runtime.heal_full(character.combat_stats.max_hp, character.combat_stats.max_mp)
         state.dead = False
         return zone
