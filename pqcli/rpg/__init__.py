@@ -7,6 +7,10 @@ Progress Quest simulation so they can be adopted incrementally.
 from .character import Character
 from .combat import CombatEngine, CombatResult
 from .enums import ClassId, RaceId
-from .stats import Attributes, CombatStats
+from .items import Inventory, Item
+from .stats import Attributes, CombatStats, ResourcePool
 
-__all__ = ["Attributes", "Character", "ClassId", "CombatEngine", "CombatResult", "CombatStats", "RaceId"]
+__all__ = [
+    "Attributes", "Character", "ClassId", "CombatEngine", "CombatResult",
+    "CombatStats", "Inventory", "Item", "RaceId", "ResourcePool",
+]
