@@ -28,9 +28,17 @@ class Dungeon:
 class DungeonInstance:
     dungeon_id: str
     instance_id: str
+    encounters: list[Encounter] = field(default_factory=list)
     players: list[str] = field(default_factory=list)
     encounter_index: int = 0
     completed: bool = False
 
     def advance(self) -> Encounter | None:
-        return None
+        if self.completed or self.encounter_index >= len(self.encounters):
+            self.completed = True
+            return None
+        encounter = self.encounters[self.encounter_index]
+        self.encounter_index += 1
+        if self.encounter_index >= len(self.encounters):
+            self.completed = True
+        return encounter
