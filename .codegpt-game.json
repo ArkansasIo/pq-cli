@@ -6,7 +6,9 @@
                    "args":  [
                                 "run",
                                 "pqcli",
-                                "--basic"
+                                "--basic",
+                                "--load-save",
+                                "1"
                             ],
                    "cwd":  "c:\\Users\\Shadow\\Videos\\New folder (7)\\pq-cli",
                    "stdin":  "Hero\nyyyy"
