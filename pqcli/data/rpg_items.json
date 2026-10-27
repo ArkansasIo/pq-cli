@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "rarities": [
+    {"id": "common", "multiplier": 1.0},
+    {"id": "uncommon", "multiplier": 1.15},
+    {"id": "rare", "multiplier": 1.35},
+    {"id": "epic", "multiplier": 1.7},
+    {"id": "legendary", "multiplier": 2.2},
+    {"id": "mythic", "multiplier": 3.0}
+  ],
+  "equipment_slots": ["head", "chest", "legs", "hands", "feet", "weapon", "offhand", "ring", "amulet"]
+}
