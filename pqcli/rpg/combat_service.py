@@ -20,13 +20,13 @@ class CombatService:
         self.rng = rng or random.Random()
 
     def attack(self, attacker: Character, defender: Character) -> CombatResult:
-        offense = attacker.combat_stats.attack_power
-        defense = defender.combat_stats.defense
+        offense = attacker.combat_stats.attack
+        defense = defender.combat_stats.armor
         hit = self.rng.random() < max(0.05, min(0.95, 0.75 + (offense - defense) / 200.0))
         if not hit:
             return CombatResult(attacker.id, defender.id, False, False, 0)
         critical = self.rng.random() < attacker.combat_stats.crit_chance
         damage = max(1, offense - defense // 2)
         if critical:
-            damage *= 2
+            damage = int(damage * attacker.combat_stats.crit_multiplier)
         return CombatResult(attacker.id, defender.id, True, critical, damage)
