@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "classes": [
+    {"id": "warrior", "name": "Warrior", "role": "tank", "primary": ["strength", "constitution"]},
+    {"id": "paladin", "name": "Paladin", "role": "tank_healer", "primary": ["strength", "wisdom"]},
+    {"id": "ranger", "name": "Ranger", "role": "ranged_dps", "primary": ["dexterity", "wisdom"]},
+    {"id": "rogue", "name": "Rogue", "role": "melee_dps", "primary": ["dexterity", "luck"]},
+    {"id": "mage", "name": "Mage", "role": "magic_dps", "primary": ["intelligence", "wisdom"]},
+    {"id": "cleric", "name": "Cleric", "role": "healer", "primary": ["wisdom", "spirit"]},
+    {"id": "warlock", "name": "Warlock", "role": "magic_dps", "primary": ["intelligence", "willpower"]},
+    {"id": "monk", "name": "Monk", "role": "melee_dps", "primary": ["dexterity", "spirit"]}
+  ]
+}
