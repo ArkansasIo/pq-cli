@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "races": [
+    {"id": "human", "name": "Human", "bonuses": {"charisma": 2}},
+    {"id": "elf", "name": "Elf", "bonuses": {"dexterity": 2, "intelligence": 1}},
+    {"id": "dwarf", "name": "Dwarf", "bonuses": {"constitution": 2, "strength": 1}},
+    {"id": "orc", "name": "Orc", "bonuses": {"strength": 2, "constitution": 1}},
+    {"id": "halfling", "name": "Halfling", "bonuses": {"luck": 2, "dexterity": 1}},
+    {"id": "gnome", "name": "Gnome", "bonuses": {"intelligence": 2, "dexterity": 1}},
+    {"id": "tiefling", "name": "Tiefling", "bonuses": {"charisma": 2, "intelligence": 1}}
+  ]
+}
