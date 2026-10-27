@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "dungeons": [
+    {"id": "greenfields_mines", "name": "Greenfields Mines", "level_min": 5, "level_max": 12, "raid": false, "max_players": 5},
+    {"id": "ash_citadel", "name": "Ash Citadel", "level_min": 20, "level_max": 35, "raid": false, "max_players": 5},
+    {"id": "frostmarch_keep", "name": "Frostmarch Keep", "level_min": 30, "level_max": 50, "raid": true, "max_players": 10},
+    {"id": "starfall_vault", "name": "Starfall Vault", "level_min": 50, "level_max": 70, "raid": true, "max_players": 20},
+    {"id": "void_throne", "name": "Void Throne", "level_min": 70, "level_max": 100, "raid": true, "max_players": 40}
+  ]
+}
