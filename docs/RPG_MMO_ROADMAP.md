@@ -118,3 +118,26 @@ Menu items for server-only features must show a clear "requires multiplayer serv
 ## 7. Current state and constraints
 
 The repository already documents a broad Python RPG/MMORPG domain layer. The browser companion has additional framework and original story files, but the browser client is not yet fully integrated with every Python module. A menu is not proof that its online feature is implemented. GitHub Pages can host the client and static data; a separate running server is required for real multiplayer, shared MySQL data, accounts, chat, parties, raids, and a persistent world.
+
+
+## 8. Fifth-edition source and adaptation policy
+
+Use the official SRD 5.2.1 as the default source for new rules data. SRD 5.1 may be supported as a separate legacy rules profile; do not mix their mechanics without explicit conversion. The SRD is a subset of the commercial rulebooks, not a complete scan of every D&D 5E book or adventure. Do not scrape or redistribute paid book text, illustrations, maps, or adventure content. Create original names, lore, narrative, zones, quests, monsters, item descriptions, and MMO progression, and retain required attribution for SRD material actually used.
+
+Official sources:
+- https://www.dndbeyond.com/srd
+- https://www.dndbeyond.com/creator-faq
+- https://creativecommons.org/licenses/by/4.0/
+
+Planned data modules:
+- `rules/profiles.json` — explicit SRD profile and schema version.
+- `rules/abilities.json` — ability checks, saves, proficiency and derived modifiers.
+- `rules/combat.json` — turn/action economy, attack resolution, defenses, damage and conditions.
+- `rules/character-options.json` — original game species, backgrounds, classes, subclasses and unlocks.
+- `rules/spells.json` — permitted source records with targeting and resource-cost metadata.
+- `rules/items.json` and `rules/loot-crafting.json` — equipment, consumables, affixes, drops, crafting, tempering and masterworking.
+- `rules/creatures.json` and `rules/encounters.json` — permitted creature records and original scalable encounter templates.
+- `rules/progression.json` — XP, levels, talent points and endgame progression.
+- `rules/quests-world.json` — original quest objectives, zone unlocks, factions and narrative flags.
+
+All records should have stable IDs, schema versions, validation rules and source/license metadata where applicable. Keep the Python `pqcli/rpg/` domain and browser `docs/rpg-framework.js` aligned through shared fixtures and tests before claiming parity.
