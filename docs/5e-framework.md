@@ -47,3 +47,48 @@ A future campaign-import tool may index user-provided, legally obtained referenc
 3. Add SRD-versioned rules data and automated formula tests.
 4. Connect quests, inventory, crafting, zones, dungeons, and story progress to one versioned save model.
 5. Add a server API and authoritative persistence only when multiplayer or cross-device saves are implemented.
+
+
+## RPG/MMORPG adaptation plan (October 2026)
+
+### Source boundary
+Use SRD 5.2.1 as the default rules reference for new implementation, and keep SRD 5.1 as an explicitly selected legacy rules profile when compatibility with the 2014 rules is desired. Do not scrape, copy, or bundle the full Player's Handbook, Dungeon Master's Guide, Monster Manual, expansion books, or paid adventures. Build original game-facing descriptions, names, lore, quests, UI, and progression. For open-license rules text actually incorporated, retain the applicable attribution and license notices.
+
+Official source: https://www.dndbeyond.com/srd
+Creator guidance: https://www.dndbeyond.com/creator-faq
+
+### Data-driven rules modules
+Implement the game as original, versioned data rather than a monolithic transcription of rulebooks:
+
+- `rules/profiles.json`: selected SRD profile and schema version.
+- `rules/abilities.json`: ability checks, saving throws, proficiency and derived modifiers.
+- `rules/character-options.json`: game-specific species, origins/backgrounds, classes, subclasses and level unlocks.
+- `rules/combat.json`: action economy, attack resolution, defense, damage types, conditions, recovery and encounter scaling.
+- `rules/spells.json`: licensed SRD spell records with casting metadata, resource costs, targeting and effect handlers.
+- `rules/items.json`: weapons, armor, equipment, consumables, rarity, affixes and MMO item level.
+- `rules/creatures.json`: licensed SRD creature records where permitted, plus original creatures and scalable encounter variants.
+- `rules/feats-talents.json`: feats and game-specific MMO talent trees, with prerequisite validation.
+- `rules/encounters.json`: encounter templates, enemy groups, boss phases, telegraphs and reward tables.
+- `rules/conditions.json`: status effects, stacking rules, duration, dispel and resistance behavior.
+- `rules/progression.json`: experience, level cap, subclass milestones, talent points and endgame progression.
+- `rules/loot-crafting.json`: drop tables, resource sinks, recipes, tempering and masterworking.
+- `rules/quests-world.json`: original quest objectives, zone flags, faction reputation and chapter prerequisites.
+
+Each data record should carry `id`, `rulesProfile`, `source` (where relevant), `schemaVersion`, and validation constraints. Avoid mixing SRD 5.1 and 5.2.1 mechanics silently.
+
+### MMO adaptation principles
+Tabletop rules are not copied one-for-one into an always-online MMO. Preserve recognizable tactical choices, then balance for repeatable play:
+- Use authoritative server-side combat and reward calculations once multiplayer exists.
+- Keep browser-only play functional with local save data until a server is deployed.
+- Make party roles, cooldowns, threat, encounter duration, crowd-control limits and boss phases explicit game balance rules.
+- Keep PvP modifiers separate from PvE rules.
+- Test formulas, save migrations, loot probability, cooldown enforcement and exploit resistance.
+- Never claim account security, cross-device persistence, guild chat or live matchmaking until backed by a running service.
+
+### Implementation sequence
+1. Establish a single shared character schema across browser and Python domain models.
+2. Add rules-profile identifiers and automated tests for core checks, attack resolution, defense, saves and progression.
+3. Integrate the same schema with inventory, equipment, skills, quests, crafting, zones and dungeon state.
+4. Add SRD-sourced data only after license/source metadata and attribution are present.
+5. Build original MMORPG content—species, factions, zones, dungeons, raids, bosses, loot and narrative—around that rules engine.
+6. Add backend persistence and authoritative multiplayer as a separate milestone.
