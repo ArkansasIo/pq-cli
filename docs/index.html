@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>pq-cli — Progress Quest in the Terminal</title>
+  <meta name="description" content="A Python terminal port of Progress Quest, with installation instructions, features, and source code.">
+  <style>
+    :root { color-scheme: dark; --bg:#0b1120; --panel:#141e30; --line:#293750; --text:#edf3ff; --muted:#a9b8d0; --accent:#8bc5ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; background:radial-gradient(ellipse at top,#172844 0%,var(--bg) 58%); color:var(--text); }
+    main { width:min(920px,calc(100% - 32px)); margin:0 auto; padding:64px 0 48px; }
+    .eyebrow { color:var(--accent); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78rem; }
+    h1 { font-size:clamp(2.4rem,7vw,4.5rem); line-height:1.05; margin:.5rem 0 1rem; letter-spacing:-.04em; }
+    .lead { color:var(--muted); font-size:1.15rem; max-width:680px; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; margin:28px 0 40px; }
+    a.button { display:inline-block; padding:11px 16px; border:1px solid var(--line); border-radius:10px; color:var(--text); text-decoration:none; font-weight:650; }
+    a.primary { background:var(--accent); color:#08111f; border-color:var(--accent); }
+    section { background:rgba(20,30,48,.82); border:1px solid var(--line); border-radius:16px; padding:22px; margin:18px 0; }
+    h2 { margin-top:0; font-size:1.25rem; }
+    ul { padding-left:1.25rem; color:var(--muted); }
+    code, pre { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    pre { overflow:auto; padding:16px; border-radius:10px; background:#080d17; border:1px solid var(--line); color:#d7e6ff; }
+    a { color:var(--accent); }
+    footer { color:var(--muted); margin-top:32px; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">Terminal idle RPG</div>
+    <h1>Progress Quest,<br>in the terminal.</h1>
+    <p class="lead">pq-cli is a Python terminal port of Progress Quest. Create a character, watch the adventure progress, and keep your save data between sessions.</p>
+    <div class="actions">
+      <a class="button primary" href="https://github.com/ArkansasIo/pq-cli">View source on GitHub</a>
+      <a class="button" href="https://progressquest.com/">Original Progress Quest</a>
+    </div>
+    <section>
+      <h2>Features</h2>
+      <ul>
+        <li>Faithful port of the original game logic.</li>
+        <li>Colorful curses interface and a minimal basic interface.</li>
+        <li>Local save files with backups.</li>
+        <li>Customizable races, classes, monsters, equipment, spells, and combat text.</li>
+        <li>Import and export compatible Progress Quest character files.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Install</h2>
+      <p>Requires Python 3.10 or newer.</p>
+      <pre><code>python -m pip install --user pqcli
+pqcli</code></pre>
+      <p>Or run from source:</p>
+      <pre><code>git clone https://github.com/ArkansasIo/pq-cli.git
+cd pq-cli
+python -m pip install .
+pqcli</code></pre>
+    </section>
+    <section>
+      <h2>Run tests from source</h2>
+      <pre><code>uv sync
+uv run pytest</code></pre>
+    </section>
+    <section>
+      <h2>Documentation and support</h2>
+      <p>For complete setup details, customization options, Docker instructions, and troubleshooting, read the <a href="https://github.com/ArkansasIo/pq-cli#readme">repository README</a>. Report bugs or request features in <a href="https://github.com/ArkansasIo/pq-cli/issues">GitHub Issues</a>.</p>
+    </section>
+    <footer>Community project page for pq-cli. Progress Quest is referenced for compatibility and attribution; this page is not the original online game.</footer>
+  </main>
+</body>
+</html>
