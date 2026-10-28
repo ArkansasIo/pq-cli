@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827"><title>pq-cli Web Adventure</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1120;--panel:#141e30;--line:#293750;--text:#edf3ff;--muted:#a9b8d0;--accent:#8bc5ff;--gold:#f5ce72}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#172844,var(--bg) 60%);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1050px;margin:auto;padding:22px 16px 40px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{margin:0;font-size:clamp(1.7rem,5vw,2.6rem)}.sub{color:var(--muted);margin:.2rem 0 1.2rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:14px}.card{background:rgba(20,30,48,.92);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}h2{font-size:1.1rem;margin:0 0 12px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{padding:10px;background:#0c1423;border-radius:9px}.muted{color:var(--muted)}.value{font-size:1.15rem;font-weight:750}.bar{height:8px;background:#27344b;border-radius:99px;overflow:hidden;margin-top:6px}.fill{height:100%;width:0;background:var(--accent);transition:width .2s}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}button,select{font:inherit;color:var(--text);background:#202f46;border:1px solid #3a4d69;border-radius:9px;padding:9px 12px}button{cursor:pointer}button:hover{border-color:var(--accent)}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--accent);color:#08111f;border-color:var(--accent);font-weight:750}.log{height:255px;overflow:auto;display:flex;flex-direction:column-reverse;gap:6px}.entry{border-bottom:1px solid #293750;padding:6px 0;color:#cbd7e9;font-size:.92rem}.gold{color:var(--gold)}.badge{border:1px solid var(--line);padding:4px 9px;border-radius:99px;color:var(--muted);font-size:.85rem}.wide{grid-column:1/-1}.foot{margin-top:18px;color:var(--muted);font-size:.85rem}label{display:block;color:var(--muted);margin:8px 0 4px}input{width:100%;background:#0c1423;border:1px solid #3a4d69;border-radius:8px;color:var(--text);padding:10px;font:inherit}
+</style>
+</head>
+<body><main>
+<div class="top"><div><h1>Progress Quest</h1><div class="sub">Browser adventure · idle RPG prototype</div></div><span class="badge" id="state">Character not created</span></div>
+<div id="create" class="card">
+<h2>Create your adventurer</h2><label for="hero">Character name</label><input id="hero" maxlength="24" placeholder="Name your hero" value="Adventurer">
+<label for="race">Race</label><select id="race"><option>Human</option><option>Elf</option><option>Dwarf</option><option>Halfling</option><option>Orc</option></select>
+<label for="klass">Class</label><select id="klass"><option>Fighter</option><option>Wizard</option><option>Rogue</option><option>Cleric</option><option>Ranger</option></select>
+<div class="actions"><button class="primary" id="createBtn">Begin adventure</button><button id="loadBtn">Load saved hero</button></div>
+<p class="muted">This is a browser-playable companion adaptation; it is not the original Python terminal interface.</p>
+</div>
+<div id="game" hidden>
+<div class="grid" style="margin-top:14px">
+<section class="card"><h2>Hero</h2><div class="value" id="heroName">—</div><div class="muted" id="heroType">—</div><div class="stats" style="margin-top:12px">
+<div class="stat"><div class="muted">Level</div><div class="value" id="level">1</div></div><div class="stat"><div class="muted">Experience</div><div class="value" id="xp">0 / 100</div><div class="bar"><div class="fill" id="xpbar"></div></div></div>
+<div class="stat"><div class="muted">Health</div><div class="value" id="hp">30 / 30</div><div class="bar"><div class="fill" id="hpbar"></div></div></div><div class="stat"><div class="muted">Gold</div><div class="value gold" id="gold">0</div></div>
+</div><div class="actions"><button id="restBtn">Rest</button><button id="saveBtn">Save game</button><button id="newBtn">New character</button></div></section>
+<section class="card"><h2>Adventure</h2><div class="value" id="zone">The Greenway</div><p class="muted" id="encounter">Your journey is beginning.</p><div class="stats"><div class="stat"><div class="muted">Monsters defeated</div><div class="value" id="kills">0</div></div><div class="stat"><div class="muted">Equipment power</div><div class="value" id="power">1</div></div></div><div class="actions"><button class="primary" id="fightBtn">Fight next encounter</button><button id="exploreBtn">Explore</button></div></section>
+<section class="card"><h2>Inventory</h2><div id="inventory" class="muted">No items yet. Defeat enemies to find loot.</div><div class="actions"><button id="equipBtn" disabled>Equip best item</button></div></section>
+<section class="card"><h2>Adventure log</h2><div class="log" id="log" aria-live="polite"></div></section>
+</div></div>
+<div class="foot">Progress is saved locally in this browser. This page is a fan-made web adaptation of the terminal game project. <a style="color:var(--accent)" href="https://github.com/ArkansasIo/pq-cli">Source repository</a> · <a style="color:var(--accent)" href="https://github.com/ArkansasIo/pq-cli#readme">CLI documentation</a></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let s=null;
+const monsters=[["Slime",7,8,4],["Wild Boar",11,12,6],["Goblin Scout",15,17,9],["Cave Spider",19,23,12],["Skeleton Warrior",24,30,16],["Orc Raider",30,38,22],["Young Drake",39,50,30]];
+const items=[];
+function log(t){const e=document.createElement("div");e.className="entry";e.textContent=t;$("log").prepend(e)}
+function maxHp(){return 25+s.level*7+(s.race==="Dwarf"?8:0)+(s.klass==="Fighter"?5:0)}
+function needXp(){return Math.floor(100*Math.pow(s.level,1.55))}
+function render(){
+$("state").textContent="Level "+s.level+" · "+s.zone;$("heroName").textContent=s.name;$("heroType").textContent=s.race+" "+s.klass;
+$("level").textContent=s.level;$("xp").textContent=s.xp+" / "+needXp();$("xpbar").style.width=Math.min(100,s.xp/needXp()*100)+"%";
+$("hp").textContent=s.hp+" / "+maxHp();$("hpbar").style.width=Math.max(0,Math.min(100,s.hp/maxHp()*100))+"%";$("gold").textContent=s.gold;
+$("kills").textContent=s.kills;$("power").textContent=s.power;$("zone").textContent=s.zone;
+$("inventory").textContent=s.items.length?s.items.map((it,i)=>(i+1)+". "+it.name+" (+"+it.power+" power)"+(s.equipped===i?" · equipped":"")).join("\n"):"No items yet. Defeat enemies to find loot.";
+$("inventory").style.whiteSpace="pre-line";$("equipBtn").disabled=!s.items.length||s.equipped===s.items.reduce((best,it,i)=>it.power>s.items[best].power?i:best,0);
+}
+function save(){localStorage.setItem("pqcli-web-save",JSON.stringify(s));log("Game saved in this browser.");}
+function begin(load=false){
+if(load){try{s=JSON.parse(localStorage.getItem("pqcli-web-save"));if(!s)throw Error()}catch{$("state").textContent="No saved hero found";return}}
+else{s={name:$("hero").value.trim()||"Adventurer",race:$("race").value,klass:$("klass").value,level:1,xp:0,hp:32,gold:0,kills:0,power:1,zone:"The Greenway",items:[],equipped:-1};s.hp=maxHp();log("Welcome, "+s.name+". Your quest begins in The Greenway.");}
+$("create").hidden=true;$("game").hidden=false;render();save();
+}
+function levelCheck(){while(s.xp>=needXp()){s.xp-=needXp();s.level++;s.hp=maxHp();log("Level up! You are now level "+s.level+". Health restored.");}}
+function fight(){
+const index=Math.min(monsters.length-1,Math.floor((s.level-1)/2)+Math.floor(Math.random()*2));
+const [name,hp,xp,gold]=monsters[index];const attack=3+s.level*2+s.power+(s.klass==="Fighter"?3:0)+(s.klass==="Rogue"?2:0);
+const enemyHp=hp+Math.floor(Math.random()*7);const enemyAttack=2+Math.floor(s.level*1.6)+Math.floor(Math.random()*5);
+if(s.hp<=enemyAttack){s.hp=Math.min(maxHp(),s.hp+Math.ceil(maxHp()*.45));log(name+" overwhelmed you. You retreat and recover some health.");render();return}
+s.hp=Math.max(1,s.hp-enemyAttack);s.xp+=xp;s.gold+=gold+Math.floor(Math.random()*5);s.kills++;
+log("Defeated "+name+" (attack "+attack+" vs. "+enemyHp+" enemy HP). Earned "+xp+" XP and "+gold+" gold.");
+if(Math.random()<.38){const p=1+Math.floor(Math.random()*Math.max(2,s.level+2));const it={name:["Worn Blade","Oak Charm","Scout's Boots","Iron Ring","Runed Staff"][Math.floor(Math.random()*5)],power:p};s.items.push(it);log("Loot found: "+it.name+" (+"+p+" power).")}
+levelCheck();render();save();
+}
+$("createBtn").onclick=()=>begin(false);$("loadBtn").onclick=()=>begin(true);$("fightBtn").onclick=fight;
+$("restBtn").onclick=()=>{s.hp=maxHp();log("You rest and recover all health.");render();save()};
+$("saveBtn").onclick=save;
+$("newBtn").onclick=()=>{if(confirm("Start a new character? Your current browser save will be replaced when you save the new hero.")){s=null;$("game").hidden=true;$("create").hidden=false;$("state").textContent="Character not created";$("log").innerHTML=""}};
+$("exploreBtn").onclick=()=>{const zones=["The Greenway","Mosswood Forest","Forgotten Ruins","Whispering Caverns","Ashen Highlands","Dragon's Reach"];const n=Math.min(zones.length-1,Math.floor(s.kills/4));s.zone=zones[n];log("You explore "+s.zone+". The air grows "+(["fresh","thick with moss","cold and ancient","damp and strange","sharp with ash","hot with distant fire"][n])+".");render();save()};
+$("equipBtn").onclick=()=>{if(!s.items.length)return;let best=0;s.items.forEach((it,i)=>{if(it.power>s.items[best].power)best=i});s.equipped=best;s.power=s.items[best].power;log("Equipped "+s.items[best].name+". Power is now "+s.power+".");render();save()};
+</script></body></html>
